@@ -272,7 +272,89 @@ app.post(
         });
     }
 );
+// ===============================
+// MAINTENANCE MODE
+// ===============================
 
+const maintenanceFile =
+    path.join(dataDir, "maintenance.json");
+
+if (!fs.existsSync(maintenanceFile)) {
+    fs.writeFileSync(
+        maintenanceFile,
+        JSON.stringify({ enabled: false }, null, 2)
+    );
+}
+
+function readMaintenance() {
+
+    try {
+
+        return JSON.parse(
+            fs.readFileSync(
+                maintenanceFile,
+                "utf8"
+            )
+        );
+
+    } catch {
+
+        return {
+            enabled: false
+        };
+    }
+}
+
+
+function saveMaintenance(data) {
+
+    fs.writeFileSync(
+        maintenanceFile,
+        JSON.stringify(
+            data,
+            null,
+            2
+        )
+    );
+}
+
+
+// ADMIN: GET MAINTENANCE STATUS
+
+app.get(
+    "/api/admin/maintenance",
+    adminAuth,
+    (req, res) => {
+
+        res.json(
+            readMaintenance()
+        );
+    }
+);
+
+
+// ADMIN: CHANGE MAINTENANCE STATUS
+
+app.post(
+    "/api/admin/maintenance",
+    adminAuth,
+    (req, res) => {
+
+        const enabled =
+            Boolean(req.body.enabled);
+
+        const data = {
+            enabled
+        };
+
+        saveMaintenance(data);
+
+        res.json({
+            success: true,
+            enabled
+        });
+    }
+);
 
 // ===============================
 // ADMIN DELETE
