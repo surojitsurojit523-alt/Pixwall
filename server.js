@@ -331,7 +331,20 @@ app.get(
         );
     }
 );
+// ===============================
+// PUBLIC MAINTENANCE STATUS
+// ===============================
 
+app.get(
+    "/api/maintenance",
+    (req, res) => {
+
+        res.json(
+            readMaintenance()
+        );
+
+    }
+);
 
 // ADMIN: CHANGE MAINTENANCE STATUS
 
