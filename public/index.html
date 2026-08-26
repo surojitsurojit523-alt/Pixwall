@@ -11,16 +11,29 @@
 
 <body>
 
-<div id="maintenanceOverlay" class="maintenance-overlay" style="display:none;">
+<!-- ===============================
+     MAINTENANCE SCREEN
+     =============================== -->
+
+<div
+    id="maintenanceOverlay"
+    class="maintenance-overlay"
+    style="display:none;"
+>
+
     <div class="maintenance-card">
 
-        <div class="maintenance-icon">◈</div>
+        <div class="maintenance-icon">
+            ◈
+        </div>
 
         <span class="maintenance-label">
             PIXWALL • SYSTEM MAINTENANCE
         </span>
 
-        <h1>We'll be back soon.</h1>
+        <h1>
+            We'll be back soon.
+        </h1>
 
         <p>
             PixWall is currently undergoing scheduled
@@ -28,23 +41,38 @@
         </p>
 
         <div class="maintenance-notice">
-            <strong>We're working on it.</strong>
+
+            <strong>
+                We're working on it.
+            </strong>
 
             <span>
                 The website is expected to be restored
                 within 1–2 days. Please check back later.
             </span>
+
         </div>
 
         <div class="maintenance-progress">
+
             <div class="progress-top">
-                <span>Maintenance in progress</span>
-                <span>Working</span>
+
+                <span>
+                    Maintenance in progress
+                </span>
+
+                <span>
+                    Working
+                </span>
+
             </div>
 
             <div class="progress-bar">
+
                 <div class="progress-fill"></div>
+
             </div>
+
         </div>
 
         <p class="maintenance-footer">
@@ -57,93 +85,78 @@
         </div>
 
     </div>
+
 </div>
 
-<script>
-(async function () {
-    try {
-        const response = await fetch("/api/maintenance");
-        const data = await response.json();
 
-        if (data.enabled) {
-            const overlay =
-                document.getElementById("maintenanceOverlay");
+<!-- ===============================
+     CREATOR SPLASH
+     =============================== -->
 
-            if (overlay) {
-                overlay.style.display = "flex";
-            }
+<div
+    id="creatorSplash"
+    class="creator-splash"
+>
 
-            document.body.style.overflow = "hidden";
-        }
-
-    } catch (error) {
-        console.log("Maintenance status unavailable.");
-    }
-})();
-</script>
-(async function () {
-
-    try {
-
-        const response =
-            await fetch("/api/maintenance");
-
-        const data =
-            await response.json();
-
-        if (data.enabled) {
-
-            const overlay =
-                document.getElementById(
-                    "maintenanceOverlay"
-                );
-
-            if (overlay) {
-                overlay.style.display = "flex";
-            }
-
-            document.body.style.overflow = "hidden";
-        }
-
-    } catch (error) {
-
-        console.log(
-            "Maintenance status unavailable."
-        );
-
-    }
-
-})();
-</script>
-<body>
-
-<div id="creatorSplash" class="creator-splash">
     <div class="creator-splash-content">
-        <div class="creator-logo">◈</div>
-        <div class="creator-title">PixWall</div>
+
+        <div class="creator-logo">
+            ◈
+        </div>
+
+        <div class="creator-title">
+            PixWall
+        </div>
+
         <div class="creator-by">
             Created by <strong>Surojit</strong>
         </div>
+
     </div>
+
 </div>
+
+
+<!-- ===============================
+     HEADER
+     =============================== -->
+
 <header class="topbar">
 
     <div class="logo">
-        <span>◈</span> PixWall
+        <span>◈</span>
+        PixWall
     </div>
 
     <nav>
-        <a href="#" class="active">Home</a>
-        <a href="#latest">Latest</a>
-        <a href="#categories">Categories</a>
+
+        <a href="#" class="active">
+            Home
+        </a>
+
+        <a href="#latest">
+            Latest
+        </a>
+
+        <a href="#categories">
+            Categories
+        </a>
+
     </nav>
 
-    <button class="upload-btn" onclick="openUpload()">
+    <button
+        class="upload-btn"
+        onclick="openUpload()"
+    >
         + Upload
     </button>
 
 </header>
 
+
+<!-- ===============================
+     HERO
+     =============================== -->
 
 <section class="hero">
 
@@ -159,17 +172,16 @@
         </h1>
 
         <p>
-            Discover beautiful wallpapers, share your own creations,
-            and find something perfect for your screen.
+            Discover beautiful wallpapers, share your own
+            creations, and find something perfect for your screen.
         </p>
 
         <button
             class="explore-btn"
-            onclick="document.getElementById('latest').scrollIntoView()">
-
+            onclick="document.getElementById('latest').scrollIntoView()"
+        >
             Explore Wallpapers
             <span>→</span>
-
         </button>
 
     </div>
@@ -179,15 +191,22 @@
 
         <img
             src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1000&q=85"
-            alt="Featured Wallpaper">
+            alt="Featured Wallpaper"
+        >
 
         <div class="hero-overlay">
 
-            <span>FEATURED</span>
+            <span>
+                FEATURED
+            </span>
 
-            <h3>Midnight Mountains</h3>
+            <h3>
+                Midnight Mountains
+            </h3>
 
-            <p>Nature Collection</p>
+            <p>
+                Nature Collection
+            </p>
 
         </div>
 
@@ -196,8 +215,14 @@
 </section>
 
 
+<!-- ===============================
+     WALLPAPERS
+     =============================== -->
 
-<section class="wallpapers" id="latest">
+<section
+    class="wallpapers"
+    id="latest"
+>
 
     <div class="section-header">
 
@@ -216,66 +241,93 @@
 
         <div class="search-box">
 
-            <span>⌕</span>
+            <span>
+                ⌕
+            </span>
 
             <input
                 type="text"
                 id="searchInput"
-                placeholder="Search wallpapers...">
+                placeholder="Search wallpapers..."
+            >
 
         </div>
 
     </div>
 
 
+    <!-- CATEGORIES -->
 
-    <div class="categories" id="categories">
+    <div
+        class="categories"
+        id="categories"
+    >
 
-        <button class="category active"
-            onclick="filterCategory('All', this)">
+        <button
+            class="category active"
+            onclick="filterCategory('All', this)"
+        >
             All
         </button>
 
-        <button class="category"
-            onclick="filterCategory('Nature', this)">
+        <button
+            class="category"
+            onclick="filterCategory('Nature', this)"
+        >
             Nature
         </button>
 
-        <button class="category"
-            onclick="filterCategory('Gaming', this)">
+        <button
+            class="category"
+            onclick="filterCategory('Gaming', this)"
+        >
             Gaming
         </button>
 
-        <button class="category"
-            onclick="filterCategory('Anime', this)">
+        <button
+            class="category"
+            onclick="filterCategory('Anime', this)"
+        >
             Anime
         </button>
 
-        <button class="category"
-            onclick="filterCategory('Cars', this)">
+        <button
+            class="category"
+            onclick="filterCategory('Cars', this)"
+        >
             Cars
         </button>
 
-        <button class="category"
-            onclick="filterCategory('AMOLED', this)">
+        <button
+            class="category"
+            onclick="filterCategory('AMOLED', this)"
+        >
             AMOLED
         </button>
 
-        <button class="category"
-            onclick="filterCategory('Abstract', this)">
+        <button
+            class="category"
+            onclick="filterCategory('Abstract', this)"
+        >
             Abstract
         </button>
 
-        <button class="category"
-            onclick="filterCategory('Aesthetic', this)">
+        <button
+            class="category"
+            onclick="filterCategory('Aesthetic', this)"
+        >
             Aesthetic
         </button>
 
     </div>
 
 
+    <!-- WALLPAPER GRID -->
 
-    <div id="wallpaperGrid" class="wallpaper-grid">
+    <div
+        id="wallpaperGrid"
+        class="wallpaper-grid"
+    >
 
         <div class="loading">
             Loading wallpapers...
@@ -286,15 +338,21 @@
 </section>
 
 
+<!-- ===============================
+     UPLOAD MODAL
+     =============================== -->
 
-<!-- UPLOAD MODAL -->
-
-<div id="uploadModal" class="modal">
+<div
+    id="uploadModal"
+    class="modal"
+>
 
     <div class="modal-box">
 
-        <button class="close-btn"
-            onclick="closeUpload()">
+        <button
+            class="close-btn"
+            onclick="closeUpload()"
+        >
             ×
         </button>
 
@@ -321,7 +379,8 @@
                     type="file"
                     id="wallpaperFile"
                     accept="image/jpeg,image/png,image/webp"
-                    required>
+                    required
+                >
 
                 <div class="upload-icon">
                     ↑
@@ -343,7 +402,8 @@
                 id="wallpaperTitle"
                 placeholder="Wallpaper title"
                 maxlength="80"
-                required>
+                required
+            >
 
 
             <input
@@ -351,7 +411,8 @@
                 id="creatorName"
                 placeholder="Creator name"
                 maxlength="40"
-                required>
+                required
+            >
 
 
             <select id="wallpaperCategory">
@@ -390,15 +451,15 @@
             <input
                 type="text"
                 id="wallpaperTags"
-                placeholder="Tags (optional)">
+                placeholder="Tags (optional)"
+            >
 
 
             <button
                 type="submit"
-                class="submit-btn">
-
+                class="submit-btn"
+            >
                 Submit for review
-
             </button>
 
         </form>
@@ -406,7 +467,8 @@
 
         <div
             id="uploadStatus"
-            class="upload-status">
+            class="upload-status"
+        >
         </div>
 
     </div>
@@ -414,6 +476,9 @@
 </div>
 
 
+<!-- ===============================
+     FOOTER
+     =============================== -->
 
 <footer>
 
@@ -431,6 +496,53 @@
 
 </footer>
 
+
+<!-- ===============================
+     MAINTENANCE CHECK
+     =============================== -->
+
+<script>
+(async function () {
+
+    try {
+
+        const response =
+            await fetch("/api/maintenance");
+
+        const data =
+            await response.json();
+
+        if (data.enabled) {
+
+            const overlay =
+                document.getElementById(
+                    "maintenanceOverlay"
+                );
+
+            if (overlay) {
+
+                overlay.style.display = "flex";
+
+            }
+
+            document.body.style.overflow =
+                "hidden";
+
+        }
+
+    } catch (error) {
+
+        console.log(
+            "Maintenance status unavailable."
+        );
+
+    }
+
+})();
+</script>
+
+
+<!-- MAIN JAVASCRIPT -->
 
 <script src="script.js"></script>
 
