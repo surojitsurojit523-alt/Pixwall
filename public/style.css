@@ -800,3 +800,82 @@ footer span {
     }
 
 }
+/* =========================
+   PIXWALL CREATOR SPLASH
+========================= */
+
+.creator-splash {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #08090b;
+
+    animation: splashFadeOut 0.7s ease 1.8s forwards;
+}
+
+.creator-splash-content {
+    text-align: center;
+    animation: splashScale 0.8s ease;
+}
+
+.creator-logo {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: #ffffff;
+    color: #08090b;
+
+    font-size: 30px;
+    font-weight: 900;
+}
+
+.creator-title {
+    color: #ffffff;
+    font-size: 34px;
+    font-weight: 900;
+}
+
+.creator-by {
+    margin-top: 9px;
+
+    color: #858b96;
+
+    font-size: 12px;
+    letter-spacing: 1.2px;
+}
+
+.creator-by strong {
+    color: #ffffff;
+}
+
+@keyframes splashScale {
+    from {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes splashFadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+}
