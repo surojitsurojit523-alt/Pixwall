@@ -879,3 +879,146 @@ footer span {
         pointer-events: none;
     }
 }
+/* ===============================
+   MAINTENANCE OVERLAY
+   =============================== */
+
+.maintenance-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(255,255,255,.07),
+            transparent 38%
+        ),
+        #08090b;
+}
+
+.maintenance-card {
+    width: min(520px, 100%);
+
+    padding: 42px 28px;
+
+    text-align: center;
+
+    background: rgba(255,255,255,.035);
+
+    border: 1px solid rgba(255,255,255,.09);
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.55);
+
+    backdrop-filter: blur(20px);
+}
+
+.maintenance-logo {
+    width: 66px;
+    height: 66px;
+
+    margin: 0 auto 24px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 19px;
+
+    background: #fff;
+
+    color: #08090b;
+
+    font-size: 28px;
+    font-weight: 900;
+
+    box-shadow:
+        0 12px 35px rgba(255,255,255,.08);
+}
+
+.maintenance-card h1 {
+    margin: 0;
+
+    color: #fff;
+
+    font-size: clamp(25px, 6vw, 34px);
+
+    line-height: 1.15;
+
+    letter-spacing: -1.2px;
+}
+
+.maintenance-card p {
+    margin: 16px auto 0;
+
+    max-width: 430px;
+
+    color: #9298a3;
+
+    font-size: 14px;
+
+    line-height: 1.75;
+}
+
+.maintenance-status {
+    display: inline-flex;
+
+    margin-top: 26px;
+
+    padding: 8px 12px;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.04);
+
+    color: #a5abb5;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 500px) {
+
+    .maintenance-overlay {
+        padding: 18px;
+    }
+
+    .maintenance-card {
+        padding: 36px 22px;
+
+        border-radius: 23px;
+    }
+
+    .maintenance-logo {
+        width: 58px;
+        height: 58px;
+
+        margin-bottom: 20px;
+
+        font-size: 24px;
+    }
+
+    .maintenance-card h1 {
+        font-size: 27px;
+    }
+
+    .maintenance-card p {
+        font-size: 13px;
+    }
+}

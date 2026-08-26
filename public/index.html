@@ -9,10 +9,44 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+ <body>
 <link rel="stylesheet" href="style.css">
 </head>
+<script>
+(async function () {
 
+    try {
+
+        const response =
+            await fetch("/api/maintenance");
+
+        const data =
+            await response.json();
+
+        if (data.enabled) {
+
+            const overlay =
+                document.getElementById(
+                    "maintenanceOverlay"
+                );
+
+            if (overlay) {
+                overlay.style.display = "flex";
+            }
+
+            document.body.style.overflow = "hidden";
+        }
+
+    } catch (error) {
+
+        console.log(
+            "Maintenance status unavailable."
+        );
+
+    }
+
+})();
+</script>
 <body>
 
 <div id="creatorSplash" class="creator-splash">
