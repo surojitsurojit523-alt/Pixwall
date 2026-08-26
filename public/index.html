@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PixWall — Wallpaper Community</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="logo">
+        <span>◈</span> PixWall
+    </div>
+
+    <nav>
+        <a href="#" class="active">Home</a>
+        <a href="#latest">Latest</a>
+        <a href="#categories">Categories</a>
+    </nav>
+
+    <button class="upload-btn" onclick="openUpload()">
+        + Upload
+    </button>
+
+</header>
+
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <span class="eyebrow">
+            THE WALLPAPER COMMUNITY
+        </span>
+
+        <h1>
+            Make your<br>
+            <span>screen yours.</span>
+        </h1>
+
+        <p>
+            Discover beautiful wallpapers, share your own creations,
+            and find something perfect for your screen.
+        </p>
+
+        <button
+            class="explore-btn"
+            onclick="document.getElementById('latest').scrollIntoView()">
+
+            Explore Wallpapers
+            <span>→</span>
+
+        </button>
+
+    </div>
+
+
+    <div class="hero-image">
+
+        <img
+            src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1000&q=85"
+            alt="Featured Wallpaper">
+
+        <div class="hero-overlay">
+
+            <span>FEATURED</span>
+
+            <h3>Midnight Mountains</h3>
+
+            <p>Nature Collection</p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<section class="wallpapers" id="latest">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="eyebrow">
+                DISCOVER
+            </span>
+
+            <h2>
+                Community wallpapers
+            </h2>
+
+        </div>
+
+
+        <div class="search-box">
+
+            <span>⌕</span>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search wallpapers...">
+
+        </div>
+
+    </div>
+
+
+
+    <div class="categories" id="categories">
+
+        <button class="category active"
+            onclick="filterCategory('All', this)">
+            All
+        </button>
+
+        <button class="category"
+            onclick="filterCategory('Nature', this)">
+            Nature
+        </button>
+
+        <button class="category"
+            onclick="filterCategory('Gaming', this)">
+            Gaming
+        </button>
+
+        <button class="category"
+            onclick="filterCategory('Anime', this)">
+            Anime
+        </button>
+
+        <button class="category"
+            onclick="filterCategory('Cars', this)">
+            Cars
+        </button>
+
+        <button class="category"
+            onclick="filterCategory('AMOLED', this)">
+            AMOLED
+        </button>
+
+        <button class="category"
+            onclick="filterCategory('Abstract', this)">
+            Abstract
+        </button>
+
+        <button class="category"
+            onclick="filterCategory('Aesthetic', this)">
+            Aesthetic
+        </button>
+
+    </div>
+
+
+
+    <div id="wallpaperGrid" class="wallpaper-grid">
+
+        <div class="loading">
+            Loading wallpapers...
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- UPLOAD MODAL -->
+
+<div id="uploadModal" class="modal">
+
+    <div class="modal-box">
+
+        <button class="close-btn"
+            onclick="closeUpload()">
+            ×
+        </button>
+
+
+        <span class="eyebrow">
+            CREATOR STUDIO
+        </span>
+
+        <h2>
+            Upload wallpaper
+        </h2>
+
+        <p class="modal-description">
+            Share your wallpaper with the PixWall community.
+            Every upload is reviewed before becoming public.
+        </p>
+
+
+        <form id="uploadForm">
+
+            <label class="file-drop">
+
+                <input
+                    type="file"
+                    id="wallpaperFile"
+                    accept="image/jpeg,image/png,image/webp"
+                    required>
+
+                <div class="upload-icon">
+                    ↑
+                </div>
+
+                <strong>
+                    Choose wallpaper
+                </strong>
+
+                <span>
+                    JPG, PNG or WEBP
+                </span>
+
+            </label>
+
+
+            <input
+                type="text"
+                id="wallpaperTitle"
+                placeholder="Wallpaper title"
+                maxlength="80"
+                required>
+
+
+            <input
+                type="text"
+                id="creatorName"
+                placeholder="Creator name"
+                maxlength="40"
+                required>
+
+
+            <select id="wallpaperCategory">
+
+                <option value="Nature">
+                    Nature
+                </option>
+
+                <option value="Gaming">
+                    Gaming
+                </option>
+
+                <option value="Anime">
+                    Anime
+                </option>
+
+                <option value="Cars">
+                    Cars
+                </option>
+
+                <option value="AMOLED">
+                    AMOLED
+                </option>
+
+                <option value="Abstract">
+                    Abstract
+                </option>
+
+                <option value="Aesthetic">
+                    Aesthetic
+                </option>
+
+            </select>
+
+
+            <input
+                type="text"
+                id="wallpaperTags"
+                placeholder="Tags (optional)">
+
+
+            <button
+                type="submit"
+                class="submit-btn">
+
+                Submit for review
+
+            </button>
+
+        </form>
+
+
+        <div
+            id="uploadStatus"
+            class="upload-status">
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<footer>
+
+    <div class="footer-logo">
+        ◈ PixWall
+    </div>
+
+    <p>
+        A community for beautiful wallpapers.
+    </p>
+
+    <span>
+        © 2026 PixWall
+    </span>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>

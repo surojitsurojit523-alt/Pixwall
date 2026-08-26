@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PixWall Admin</title>
+
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+<header class="admin-header">
+
+    <div class="brand">
+        ◈ <span>PixWall</span>
+        <small>ADMIN</small>
+    </div>
+
+    <button
+        class="refresh-btn"
+        onclick="loadPending()">
+        ↻ Refresh
+    </button>
+
+</header>
+
+
+<main class="admin-container">
+
+    <section class="admin-intro">
+
+        <div>
+            <span class="eyebrow">
+                CONTENT MODERATION
+            </span>
+
+            <h1>
+                Review submissions
+            </h1>
+
+            <p>
+                Approve quality wallpapers before
+                they appear publicly on PixWall.
+            </p>
+        </div>
+
+        <div class="pending-count">
+            <span id="pendingCount">0</span>
+            <small>Pending</small>
+        </div>
+
+    </section>
+
+
+    <section id="submissions"
+        class="submission-grid">
+
+        <div class="loading">
+            Loading submissions...
+        </div>
+
+    </section>
+
+</main>
+
+
+<div id="toast"
+    class="toast">
+</div>
+
+
+<script src="admin.js"></script>
+
+</body>
+</html>
