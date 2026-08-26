@@ -7,8 +7,8 @@
 :root {
     --bg: #08090b;
     --card: #111318;
-    --card2: #15171d;
-    --border: rgba(255,255,255,0.08);
+    --card2: #171a20;
+    --border: rgba(255,255,255,.08);
     --text: #f5f7fa;
     --muted: #858b96;
 }
@@ -20,8 +20,13 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-button {
+button,
+input,
+select {
     font: inherit;
+}
+
+button {
     cursor: pointer;
 }
 
@@ -51,8 +56,8 @@ button {
     align-items: center;
     gap: 8px;
 
-    font-weight: 900;
     font-size: 20px;
+    font-weight: 900;
 }
 
 .brand small {
@@ -71,7 +76,6 @@ button {
     border: 1px solid var(--border);
 
     background: var(--card);
-
     color: white;
 
     padding: 9px 14px;
@@ -93,19 +97,14 @@ button {
 
     margin: auto;
 
-    padding: 65px 0 100px;
+    padding: 60px 0 100px;
 }
 
 
 /* INTRO */
 
 .admin-intro {
-    display: flex;
-
-    justify-content: space-between;
-    align-items: end;
-
-    gap: 30px;
+    margin-bottom: 35px;
 }
 
 .eyebrow {
@@ -128,48 +127,217 @@ button {
 .admin-intro p {
     margin-top: 12px;
 
-    max-width: 500px;
+    max-width: 560px;
 
     color: var(--muted);
 
     font-size: 13px;
-
     line-height: 1.7;
 }
 
 
-/* COUNT */
+/* DASHBOARD */
 
-.pending-count {
-    min-width: 120px;
+.dashboard-grid {
+    display: grid;
 
-    padding: 18px;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+.stat-card {
+    padding: 20px;
 
     background: var(--card);
 
     border: 1px solid var(--border);
 
     border-radius: 15px;
-
-    text-align: center;
 }
 
-.pending-count span {
+.stat-label {
     display: block;
 
-    font-size: 32px;
-
-    font-weight: 900;
-}
-
-.pending-count small {
     color: var(--muted);
 
     font-size: 9px;
 
     text-transform: uppercase;
 
-    letter-spacing: 1px;
+    letter-spacing: 1.3px;
+}
+
+.stat-card strong {
+    display: block;
+
+    margin-top: 10px;
+
+    font-size: 30px;
+}
+
+
+/* MAINTENANCE */
+
+.maintenance-panel {
+    margin-top: 18px;
+
+    padding: 22px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 18px;
+}
+
+.maintenance-panel h2 {
+    margin-top: 8px;
+
+    font-size: 19px;
+}
+
+.maintenance-panel p {
+    margin-top: 7px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.maintenance-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.maintenance-btn {
+    padding: 10px 14px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    background: white;
+
+    color: #08090b;
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.maintenance-btn:hover {
+    opacity: .85;
+}
+
+
+/* STATUS */
+
+.status-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px 9px;
+
+    border-radius: 7px;
+
+    background: #1d2026;
+
+    color: #a5abb5;
+
+    font-size: 8px;
+    font-weight: 800;
+
+    letter-spacing: .7px;
+}
+
+.status-pending {
+    background: #29251b;
+    color: #d2bd7b;
+}
+
+.status-approved,
+.service-online {
+    background: #19251d;
+    color: #8fc29c;
+}
+
+.status-rejected {
+    background: #281d1f;
+    color: #c9959b;
+}
+
+.maintenance-active {
+    background: #29251b;
+    color: #d2bd7b;
+}
+
+
+/* MANAGEMENT */
+
+.management {
+    margin-top: 45px;
+}
+
+.toolbar {
+    display: flex;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.search-box {
+    flex: 1;
+}
+
+.search-box input,
+.toolbar select {
+    width: 100%;
+
+    height: 42px;
+
+    padding: 0 13px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background: var(--card);
+
+    color: white;
+
+    font-size: 11px;
+}
+
+.toolbar select {
+    width: 150px;
+
+    cursor: pointer;
+}
+
+.search-box input::placeholder {
+    color: #666c76;
+}
+
+.search-box input:focus,
+.toolbar select:focus {
+    border-color: rgba(255,255,255,.22);
 }
 
 
@@ -182,8 +350,6 @@ button {
         repeat(3, minmax(0, 1fr));
 
     gap: 18px;
-
-    margin-top: 55px;
 }
 
 
@@ -228,6 +394,10 @@ button {
 
 .submission-content {
     padding: 16px;
+}
+
+.card-top {
+    margin-bottom: 12px;
 }
 
 .submission-content h3 {
@@ -305,6 +475,12 @@ button {
     opacity: .85;
 }
 
+.actions button:disabled {
+    cursor: default;
+
+    opacity: .45;
+}
+
 
 /* DELETE */
 
@@ -313,7 +489,7 @@ button {
 
     margin-top: 8px;
 
-    padding: 9px;
+    padding: 10px;
 
     border: 1px solid var(--border);
 
@@ -327,9 +503,11 @@ button {
 }
 
 .delete-btn:hover {
-    color: white;
+    background: #281d1f;
 
-    background: #191b20;
+    color: #d69ba1;
+
+    border-color: rgba(214,155,161,.2);
 }
 
 
@@ -348,6 +526,16 @@ button {
     font-size: 12px;
 }
 
+.empty h3 {
+    color: white;
+
+    font-size: 16px;
+}
+
+.empty p {
+    margin-top: 8px;
+}
+
 
 /* TOAST */
 
@@ -361,6 +549,8 @@ button {
         translate(-50%, 120px);
 
     z-index: 100;
+
+    max-width: calc(100% - 30px);
 
     padding: 12px 17px;
 
@@ -397,14 +587,23 @@ button {
         padding-top: 45px;
     }
 
-    .admin-intro {
-        align-items: start;
+    .dashboard-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .maintenance-panel {
+        align-items: flex-start;
 
         flex-direction: column;
     }
 
-    .pending-count {
+    .maintenance-actions {
         width: 100%;
+    }
+
+    .maintenance-btn {
+        flex: 1;
     }
 
     .submission-grid {
@@ -412,10 +611,7 @@ button {
             repeat(2, minmax(0, 1fr));
 
         gap: 10px;
-
-        margin-top: 35px;
     }
-
 }
 
 
@@ -429,4 +625,11 @@ button {
         font-size: 40px;
     }
 
+    .toolbar {
+        flex-direction: column;
+    }
+
+    .toolbar select {
+        width: 100%;
+    }
 }

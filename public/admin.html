@@ -18,11 +18,13 @@
         <small>ADMIN</small>
     </div>
 
-    <button
-        class="refresh-btn"
-        onclick="loadPending()">
-        ↻ Refresh
-    </button>
+    <div class="header-actions">
+        <button
+            class="refresh-btn"
+            onclick="loadAll()">
+            ↻ Refresh
+        </button>
+    </div>
 
 </header>
 
@@ -33,32 +35,134 @@
 
         <div>
             <span class="eyebrow">
-                CONTENT MODERATION
+                CONTENT MANAGEMENT
             </span>
 
             <h1>
-                Review submissions
+                Admin Dashboard
             </h1>
 
             <p>
-                Approve quality wallpapers before
-                they appear publicly on PixWall.
+                Manage wallpaper submissions, published content
+                and PixWall service status.
             </p>
-        </div>
-
-        <div class="pending-count">
-            <span id="pendingCount">0</span>
-            <small>Pending</small>
         </div>
 
     </section>
 
 
-    <section id="submissions"
-        class="submission-grid">
+    <!-- DASHBOARD -->
 
-        <div class="loading">
-            Loading submissions...
+    <section class="dashboard-grid">
+
+        <div class="stat-card">
+            <span class="stat-label">Pending</span>
+            <strong id="pendingCount">0</strong>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-label">Approved</span>
+            <strong id="approvedCount">0</strong>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-label">Rejected</span>
+            <strong id="rejectedCount">0</strong>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-label">Total</span>
+            <strong id="totalCount">0</strong>
+        </div>
+
+    </section>
+
+
+    <!-- MAINTENANCE -->
+
+    <section class="maintenance-panel">
+
+        <div>
+            <span class="eyebrow">
+                SERVICE CONTROL
+            </span>
+
+            <h2>
+                Maintenance Mode
+            </h2>
+
+            <p id="maintenanceText">
+                Check the current PixWall service status.
+            </p>
+        </div>
+
+        <div class="maintenance-actions">
+
+            <span
+                id="maintenanceStatus"
+                class="status-badge">
+                Checking...
+            </span>
+
+            <button
+                id="maintenanceBtn"
+                class="maintenance-btn"
+                onclick="toggleMaintenance()">
+                Enable Maintenance
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- SEARCH -->
+
+    <section class="management">
+
+        <div class="toolbar">
+
+            <div class="search-box">
+
+                <input
+                    id="searchInput"
+                    type="search"
+                    placeholder="Search wallpapers..."
+                    autocomplete="off">
+
+            </div>
+
+            <select id="statusFilter">
+
+                <option value="all">
+                    All
+                </option>
+
+                <option value="pending">
+                    Pending
+                </option>
+
+                <option value="approved">
+                    Approved
+                </option>
+
+                <option value="rejected">
+                    Rejected
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div
+            id="submissions"
+            class="submission-grid">
+
+            <div class="loading">
+                Loading wallpapers...
+            </div>
+
         </div>
 
     </section>
@@ -66,9 +170,7 @@
 </main>
 
 
-<div id="toast"
-    class="toast">
-</div>
+<div id="toast" class="toast"></div>
 
 
 <script src="admin.js"></script>

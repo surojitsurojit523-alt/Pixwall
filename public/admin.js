@@ -1,8 +1,28 @@
 const submissions = document.getElementById("submissions");
+
 const pendingCount = document.getElementById("pendingCount");
+const approvedCount = document.getElementById("approvedCount");
+const rejectedCount = document.getElementById("rejectedCount");
+const totalCount = document.getElementById("totalCount");
+
 const toast = document.getElementById("toast");
 
+const searchInput = document.getElementById("searchInput");
+const statusFilter = document.getElementById("statusFilter");
+
+const maintenanceStatus =
+    document.getElementById("maintenanceStatus");
+
+const maintenanceBtn =
+    document.getElementById("maintenanceBtn");
+
+const maintenanceText =
+    document.getElementById("maintenanceText");
+
+
 let ADMIN_KEY = "";
+
+let wallpapers = [];
 
 
 // ===============================
@@ -19,62 +39,84 @@ function askAdminKey() {
 
     if (!key) return false;
 
-    ADMIN_KEY = key;
+    ADMIN_KEY = key.trim();
 
     return true;
 }
 
 
 // ===============================
-// LOAD PENDING
+// ADMIN REQUEST
 // ===============================
 
-async function loadPending() {
+async function adminFetch(url, options = {}) {
+
+    if (!askAdminKey()) {
+        throw new Error("Admin authentication required.");
+    }
+
+    const response = await fetch(
+        url,
+        {
+            ...options,
+
+            headers: {
+                ...(options.headers || {}),
+                "x-admin-key": ADMIN_KEY
+            }
+        }
+    );
+
+    if (response.status === 401) {
+
+        ADMIN_KEY = "";
+
+        throw new Error(
+            "Invalid admin key."
+        );
+    }
+
+    const result =
+        await response.json();
+
+    if (!response.ok) {
+
+        throw new Error(
+            result.error ||
+            "Request failed."
+        );
+    }
+
+    return result;
+}
+
+
+// ===============================
+// LOAD ALL
+// ===============================
+
+async function loadAll() {
 
     if (!askAdminKey()) return;
 
     submissions.innerHTML = `
         <div class="loading">
-            Loading submissions...
+            Loading wallpapers...
         </div>
     `;
 
     try {
 
-        const response = await fetch(
-            "/api/admin/pending",
-            {
-                headers: {
-                    "x-admin-key": ADMIN_KEY
-                }
-            }
-        );
-
-
-        if (response.status === 401) {
-
-            ADMIN_KEY = "";
-
-            showToast(
-                "Invalid admin key."
+        wallpapers =
+            await adminFetch(
+                "/api/admin/wallpapers"
             );
 
-            submissions.innerHTML = `
-                <div class="empty">
-                    Access denied.
-                </div>
-            `;
+        updateStats();
 
-            return;
-        }
+        renderWallpapers();
 
-
-        const data =
-            await response.json();
-
-
-        renderSubmissions(data);
-
+        loadMaintenance();
 
     } catch (error) {
 
@@ -82,7 +124,8 @@ async function loadPending() {
 
         submissions.innerHTML = `
             <div class="empty">
-                Unable to connect to server.
+                <h3>Unable to load wallpapers</h3>
+                <p>${escapeHTML(error.message)}</p>
             </div>
         `;
     }
@@ -90,22 +133,95 @@ async function loadPending() {
 
 
 // ===============================
-// RENDER
+// STATS
 // ===============================
 
-function renderSubmissions(items) {
+function updateStats() {
 
-    pendingCount.textContent =
-        items.length;
+    const pending =
+        wallpapers.filter(
+            item => item.status === "pending"
+        ).length;
+
+    const approved =
+        wallpapers.filter(
+            item => item.status === "approved"
+        ).length;
+
+    const rejected =
+        wallpapers.filter(
+            item => item.status === "rejected"
+        ).length;
+
+    pendingCount.textContent = pending;
+    approvedCount.textContent = approved;
+    rejectedCount.textContent = rejected;
+    totalCount.textContent = wallpapers.length;
+}
+
+
+// ===============================
+// SEARCH + FILTER
+// ===============================
+
+function getFilteredWallpapers() {
+
+    const search =
+        String(
+            searchInput.value || ""
+        )
+        .trim()
+        .toLowerCase();
+
+    const status =
+        statusFilter.value;
+
+
+    return wallpapers.filter(item => {
+
+        const searchable = [
+
+            item.title,
+            item.creator,
+            item.category,
+            item.tags
+
+        ]
+        .join(" ")
+        .toLowerCase();
+
+
+        const matchesSearch =
+            !search ||
+            searchable.includes(search);
+
+
+        const matchesStatus =
+            status === "all" ||
+            item.status === status;
+
+
+        return (
+            matchesSearch &&
+            matchesStatus
+        );
+    });
+}
+
+
+function renderWallpapers() {
+
+    const items =
+        getFilteredWallpapers();
 
 
     if (!items.length) {
 
         submissions.innerHTML = `
             <div class="empty">
-                <h3>No pending submissions</h3>
-                <p style="margin-top:8px">
-                    New wallpaper uploads will appear here.
+                <h3>No wallpapers found</h3>
+                <p>
+                    Try another search or filter.
                 </p>
             </div>
         `;
@@ -115,15 +231,17 @@ function renderSubmissions(items) {
 
 
     submissions.innerHTML =
-        items.map(createSubmission).join("");
+        items
+            .map(createWallpaperCard)
+            .join("");
 }
 
 
 // ===============================
-// CARD
+// WALLPAPER CARD
 // ===============================
 
-function createSubmission(item) {
+function createWallpaperCard(item) {
 
     const title =
         escapeHTML(item.title);
@@ -137,6 +255,9 @@ function createSubmission(item) {
     const tags =
         escapeHTML(item.tags || "");
 
+    const status =
+        escapeHTML(item.status);
+
 
     return `
         <article
@@ -146,12 +267,23 @@ function createSubmission(item) {
 
             <img
                 class="submission-image"
-                src="${item.imageUrl}"
+                src="${escapeHTML(item.imageUrl)}"
                 alt="${title}"
+                loading="lazy"
             >
 
 
             <div class="submission-content">
+
+                <div class="card-top">
+
+                    <span
+                        class="status-badge status-${status}">
+                        ${status}
+                    </span>
+
+                </div>
+
 
                 <h3>
                     ${title}
@@ -180,30 +312,56 @@ function createSubmission(item) {
 
                 <div class="actions">
 
-                    <button
-                        class="approve"
-                        onclick="
-                            moderate(
-                                '${item.id}',
-                                'approve'
-                            )
-                        "
-                    >
-                        ✓ Approve
-                    </button>
+                    ${
+                        item.status !== "approved"
+                        ? `
+                        <button
+                            class="approve"
+                            onclick="
+                                moderate(
+                                    '${item.id}',
+                                    'approve'
+                                )
+                            "
+                        >
+                            ✓ Approve
+                        </button>
+                        `
+                        : `
+                        <button
+                            class="approve"
+                            disabled
+                        >
+                            ✓ Approved
+                        </button>
+                        `
+                    }
 
 
-                    <button
-                        class="reject"
-                        onclick="
-                            moderate(
-                                '${item.id}',
-                                'reject'
-                            )
-                        "
-                    >
-                        × Reject
-                    </button>
+                    ${
+                        item.status !== "rejected"
+                        ? `
+                        <button
+                            class="reject"
+                            onclick="
+                                moderate(
+                                    '${item.id}',
+                                    'reject'
+                                )
+                            "
+                        >
+                            × Reject
+                        </button>
+                        `
+                        : `
+                        <button
+                            class="reject"
+                            disabled
+                        >
+                            × Rejected
+                        </button>
+                        `
+                    }
 
                 </div>
 
@@ -232,7 +390,14 @@ function createSubmission(item) {
 
 async function moderate(id, action) {
 
-    if (!askAdminKey()) return;
+    const item =
+        wallpapers.find(
+            wallpaper =>
+                wallpaper.id === id
+        );
+
+
+    if (!item) return;
 
 
     const actionText =
@@ -243,7 +408,7 @@ async function moderate(id, action) {
 
     const confirmed =
         confirm(
-            `Are you sure you want to ${actionText} this wallpaper?`
+            `Are you sure you want to ${actionText} "${item.title}"?`
         );
 
 
@@ -252,31 +417,12 @@ async function moderate(id, action) {
 
     try {
 
-        const response =
-            await fetch(
-                `/api/admin/${id}/${action}`,
-                {
-                    method: "POST",
-
-                    headers: {
-                        "x-admin-key":
-                            ADMIN_KEY
-                    }
-                }
-            );
-
-
-        const result =
-            await response.json();
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                result.error ||
-                "Action failed."
-            );
-        }
+        await adminFetch(
+            `/api/admin/${id}/${action}`,
+            {
+                method: "POST"
+            }
+        );
 
 
         showToast(
@@ -286,7 +432,7 @@ async function moderate(id, action) {
         );
 
 
-        loadPending();
+        await loadAll();
 
 
     } catch (error) {
@@ -304,53 +450,41 @@ async function moderate(id, action) {
 
 async function deleteWallpaper(id) {
 
-    if (!askAdminKey()) return;
+    const item =
+        wallpapers.find(
+            wallpaper =>
+                wallpaper.id === id
+        );
 
 
-    if (
-        !confirm(
-            "Delete this wallpaper permanently?"
-        )
-    ) {
-        return;
-    }
+    if (!item) return;
+
+
+    const confirmed =
+        confirm(
+            `Delete "${item.title}" permanently?\n\nThis will remove the wallpaper from PixWall and delete its uploaded image.`
+        );
+
+
+    if (!confirmed) return;
 
 
     try {
 
-        const response =
-            await fetch(
-                `/api/admin/${id}`,
-                {
-                    method: "DELETE",
-
-                    headers: {
-                        "x-admin-key":
-                            ADMIN_KEY
-                    }
-                }
-            );
-
-
-        const result =
-            await response.json();
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                result.error ||
-                "Delete failed."
-            );
-        }
-
-
-        showToast(
-            "Wallpaper deleted."
+        await adminFetch(
+            `/api/admin/${id}`,
+            {
+                method: "DELETE"
+            }
         );
 
 
-        loadPending();
+        showToast(
+            "Wallpaper deleted permanently."
+        );
+
+
+        await loadAll();
 
 
     } catch (error) {
@@ -363,12 +497,150 @@ async function deleteWallpaper(id) {
 
 
 // ===============================
+// MAINTENANCE STATUS
+// ===============================
+
+async function loadMaintenance() {
+
+    try {
+
+        const data =
+            await adminFetch(
+                "/api/admin/maintenance"
+            );
+
+
+        updateMaintenanceUI(
+            Boolean(data.enabled)
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Maintenance status:",
+            error
+        );
+    }
+}
+
+
+// ===============================
+// TOGGLE MAINTENANCE
+// ===============================
+
+async function toggleMaintenance() {
+
+    const current =
+        maintenanceStatus.dataset.enabled === "true";
+
+
+    const next =
+        !current;
+
+
+    const message =
+        next
+        ? "Enable Maintenance Mode?\n\nThe public PixWall website will become temporarily unavailable until you disable Maintenance Mode."
+        : "Disable Maintenance Mode and make PixWall public again?";
+
+
+    if (!confirm(message)) {
+        return;
+    }
+
+
+    try {
+
+        const data =
+            await adminFetch(
+                "/api/admin/maintenance",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            enabled: next
+                        })
+                }
+            );
+
+
+        updateMaintenanceUI(
+            Boolean(data.enabled)
+        );
+
+
+        showToast(
+            next
+                ? "Maintenance Mode enabled."
+                : "Maintenance Mode disabled."
+        );
+
+
+    } catch (error) {
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+
+// ===============================
+// MAINTENANCE UI
+// ===============================
+
+function updateMaintenanceUI(enabled) {
+
+    maintenanceStatus.dataset.enabled =
+        String(enabled);
+
+
+    if (enabled) {
+
+        maintenanceStatus.textContent =
+            "MAINTENANCE ACTIVE";
+
+        maintenanceStatus.className =
+            "status-badge maintenance-active";
+
+        maintenanceBtn.textContent =
+            "Disable Maintenance";
+
+        maintenanceText.textContent =
+            "Public access is currently paused. Admin access remains available.";
+
+    } else {
+
+        maintenanceStatus.textContent =
+            "SERVICE ONLINE";
+
+        maintenanceStatus.className =
+            "status-badge service-online";
+
+        maintenanceBtn.textContent =
+            "Enable Maintenance";
+
+        maintenanceText.textContent =
+            "PixWall is currently available to visitors.";
+    }
+}
+
+
+// ===============================
 // TOAST
 // ===============================
 
 function showToast(message) {
 
-    toast.textContent = message;
+    toast.textContent =
+        message;
 
     toast.classList.add("show");
 
@@ -377,7 +649,7 @@ function showToast(message) {
 
         toast.classList.remove("show");
 
-    }, 2500);
+    }, 2800);
 }
 
 
@@ -397,7 +669,22 @@ function escapeHTML(value) {
 
 
 // ===============================
+// EVENTS
+// ===============================
+
+searchInput.addEventListener(
+    "input",
+    renderWallpapers
+);
+
+statusFilter.addEventListener(
+    "change",
+    renderWallpapers
+);
+
+
+// ===============================
 // START
 // ===============================
 
-loadPending();
+loadAll();
