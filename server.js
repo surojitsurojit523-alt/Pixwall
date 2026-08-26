@@ -187,7 +187,21 @@ function adminAuth(req, res, next) {
 
     next();
 }
+// ===============================
+// ADMIN ALL WALLPAPERS
+// ===============================
 
+app.get(
+    "/api/admin/wallpapers",
+    adminAuth,
+    (req, res) => {
+
+        const wallpapers =
+            readWallpapers();
+
+        res.json(wallpapers);
+    }
+);
 
 // ===============================
 // ADMIN PENDING
