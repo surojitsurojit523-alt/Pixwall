@@ -9,10 +9,78 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
- <body>
-<link rel="stylesheet" href="style.css">
-</head>
+<body>
+
+<div id="maintenanceOverlay" class="maintenance-overlay" style="display:none;">
+    <div class="maintenance-card">
+
+        <div class="maintenance-icon">◈</div>
+
+        <span class="maintenance-label">
+            PIXWALL • SYSTEM MAINTENANCE
+        </span>
+
+        <h1>We'll be back soon.</h1>
+
+        <p>
+            PixWall is currently undergoing scheduled
+            maintenance and improvements.
+        </p>
+
+        <div class="maintenance-notice">
+            <strong>We're working on it.</strong>
+
+            <span>
+                The website is expected to be restored
+                within 1–2 days. Please check back later.
+            </span>
+        </div>
+
+        <div class="maintenance-progress">
+            <div class="progress-top">
+                <span>Maintenance in progress</span>
+                <span>Working</span>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+
+        <p class="maintenance-footer">
+            The site will remain unavailable until the
+            PixWall administrator completes the required fixes.
+        </p>
+
+        <div class="maintenance-status">
+            ● SERVICE TEMPORARILY UNAVAILABLE
+        </div>
+
+    </div>
+</div>
+
 <script>
+(async function () {
+    try {
+        const response = await fetch("/api/maintenance");
+        const data = await response.json();
+
+        if (data.enabled) {
+            const overlay =
+                document.getElementById("maintenanceOverlay");
+
+            if (overlay) {
+                overlay.style.display = "flex";
+            }
+
+            document.body.style.overflow = "hidden";
+        }
+
+    } catch (error) {
+        console.log("Maintenance status unavailable.");
+    }
+})();
+</script>
 (async function () {
 
     try {
